@@ -36,7 +36,8 @@
                 <TextView
                     android:id="@+id/welcome"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
@@ -59,129 +60,146 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/content_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/lima"
-                android:background="@color/white"
-                android:gravity="center"
-                android:orientation="horizontal"
                 android:padding="@dimen/lima">
 
                 <ImageView
                     android:id="@+id/banner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@color/trans"
                     android:src="@drawable/onbeng" />
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:id="@+id/content_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/lima">
 
-                <ImageButton
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/trans"
-                    android:padding="@dimen/normal"
-                    android:src="@drawable/search" />
-
-                <ImageButton
-                    android:id="@+id/user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/trans"
-                    android:padding="@dimen/normal"
-                    android:src="@drawable/user" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/sub_first"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lima"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/sub_search"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/sub_search"
-                    android:textColor="@color/colorPrimary" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sub_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/sub_user"
-                    android:textColor="@color/colorPrimary" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-            <LinearLayout
+                        <ImageButton
+                            android:id="@+id/search"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/trans"
+                            android:padding="@dimen/normal"
+                            android:src="@drawable/search" />
+
+                        <TextView
+                            android:id="@+id/sub_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sub_search"
+                            android:textColor="@color/colorPrimary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/user"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/trans"
+                            android:padding="@dimen/normal"
+                            android:src="@drawable/user" />
+
+                        <TextView
+                            android:id="@+id/sub_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sub_user"
+                            android:textColor="@color/colorPrimary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:id="@+id/content_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/lima">
 
-                <ImageButton
-                    android:id="@+id/list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/trans"
-                    android:padding="@dimen/normal"
-                    android:src="@drawable/list" />
-
-                <ImageButton
-                    android:id="@+id/about"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/trans"
-                    android:padding="@dimen/normal"
-                    android:src="@drawable/help" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/sub_second"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/sub_list"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/sub_list"
-                    android:textColor="@color/colorPrimary" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sub_about"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/sub_about"
-                    android:textColor="@color/colorPrimary" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/trans"
+                            android:padding="@dimen/normal"
+                            android:src="@drawable/list" />
+
+                        <TextView
+                            android:id="@+id/sub_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sub_list"
+                            android:textColor="@color/colorPrimary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/about"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/trans"
+                            android:padding="@dimen/normal"
+                            android:src="@drawable/help" />
+
+                        <TextView
+                            android:id="@+id/sub_about"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="@string/sub_about"
+                            android:textColor="@color/colorPrimary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
-
 </android.support.design.widget.CoordinatorLayout>

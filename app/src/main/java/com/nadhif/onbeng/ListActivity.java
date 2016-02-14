@@ -3,8 +3,10 @@ package com.nadhif.onbeng;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -74,7 +76,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         swiper = (SwipeRefreshLayout) findViewById(R.id.list_order_swipe);
         swiper.setSize(SwipeRefreshLayout.DEFAULT);
-        swiper.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark, R.color.colorNormal);
+        swiper.setColorSchemeResources(R.color.white, R.color.colorAccent);
+        swiper.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary));
         swiper.setOnRefreshListener(this);
 
         loadData();

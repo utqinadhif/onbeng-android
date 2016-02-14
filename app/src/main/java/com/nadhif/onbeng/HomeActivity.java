@@ -57,9 +57,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         String restoredText = sp.getString("login", null);
         welcome = (TextView) findViewById(R.id.welcome);
         if (restoredText != null) {
-            welcome.setText("Welcome " + sp.getString("name", null));
+            if (this.welcome.getVisibility() == View.GONE) {
+                this.welcome.setVisibility(View.VISIBLE);
+            }
+            this.welcome.setText("Welcome " + sp.getString("name", null));
         } else {
-            welcome.setVisibility(View.GONE);
+            this.welcome.setText("");
+            if (this.welcome.getVisibility() == View.VISIBLE) {
+                this.welcome.setVisibility(View.GONE);
+            }
         }
 
         surl = getSharedPreferences("URL", MODE_PRIVATE);

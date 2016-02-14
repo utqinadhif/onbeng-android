@@ -107,6 +107,9 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
                         editor.commit();
 
                         Toast.makeText(getContext(), "Data Found\nWelcome " + c.getString("name"), Toast.LENGTH_LONG).show();
+                        if(HomeActivity.welcome.getVisibility() == View.GONE){
+                            HomeActivity.welcome.setVisibility(View.VISIBLE);
+                        }
                         HomeActivity.welcome.setText("Welcome " + c.getString("name"));
                         getActivity().finish();
                         startActivity(new Intent(getActivity().getApplicationContext(), UserActivity.class));

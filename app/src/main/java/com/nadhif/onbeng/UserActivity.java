@@ -110,6 +110,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             editor.commit();
 
             this.finish();
+            HomeActivity.welcome.setText("");
+            if(HomeActivity.welcome.getVisibility() == View.VISIBLE){
+                HomeActivity.welcome.setVisibility(View.GONE);
+            }
             startActivity(new Intent(getApplicationContext(), LogActivity.class));
         } else if (v == updateProfile) {
             String restoredText = sp.getString("login", null);
