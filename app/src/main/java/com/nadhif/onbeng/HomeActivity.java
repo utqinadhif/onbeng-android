@@ -141,8 +141,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onLongClick(View v) {
         if (v == banner) {
             dialog = new Dialog(this);
-            dialog.setContentView(R.layout.pop_change_host);
             dialog.setTitle("Change Host");
+            dialog.setContentView(R.layout.pop_change_host);
 
             surl = getSharedPreferences("URL", MODE_PRIVATE);
             String url = surl.getString("url", null);

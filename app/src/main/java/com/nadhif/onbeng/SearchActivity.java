@@ -69,8 +69,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mMap = mapFragment.getMap();
-            mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setMapToolbarEnabled(true);
 
             mScrollView = (ScrollView) findViewById(R.id.scroll); //parent scrollview in xml, give your scrollview id value
 
