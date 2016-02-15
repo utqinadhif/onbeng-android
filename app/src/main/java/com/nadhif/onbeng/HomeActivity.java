@@ -155,9 +155,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             hostSave.setOnClickListener(this);
 
             dialog.show();
-            return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

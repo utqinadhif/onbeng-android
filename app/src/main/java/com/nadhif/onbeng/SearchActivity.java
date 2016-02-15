@@ -152,18 +152,19 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 String titles = String.valueOf(marker.getTitle());
                 switch (snippet) {
                     case "1":
-                        Toast.makeText(getApplicationContext(), "You in Here", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "You in Here", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         if (di != null) {
                             di.remove();
+                            mMap.getUiSettings().isMapToolbarEnabled();
                         }
                         resetButton.setVisibility(View.VISIBLE);
                         title.setText(snippet);
                         bengkelName.setText(titles);
                         break;
                 }
-                return true;
+                return false;
             }
         });
     }
