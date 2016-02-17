@@ -181,6 +181,8 @@ public class MyAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(v.getContext(), DetailOrderActivity.class);
                     intent.putExtra("detail bengkel", list_order.getDetail_bengkel());
                     intent.putExtra("detail order", list_order.getDetail_order());
+                    intent.putExtra("status order", list_order.getStatusOrder());
+                    intent.putExtra("status order text", list_order.getStatusOrderText());
                     intent.putExtra("id", list_order.getDateOrder() + " " + list_order.getId());
                     v.getContext().startActivity(intent);
                 }

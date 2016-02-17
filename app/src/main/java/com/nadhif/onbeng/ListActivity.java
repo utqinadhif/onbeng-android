@@ -102,6 +102,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                                             c.getString("name_bengkel").toString(),
                                             c.getString("date_order").toString(),
                                             c.getString("status_order").toString(),
+                                            c.getString("status_order_text").toString(),
                                             c.getString("damage_order").toString(),
                                             c.getString("detail_bengkel").toString(),
                                             c.getString("detail_order").toString()
@@ -210,6 +211,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                                             c.getString("name_bengkel").toString(),
                                             c.getString("date_order").toString(),
                                             c.getString("status_order").toString(),
+                                            c.getString("status_order_text").toString(),
                                             c.getString("damage_order").toString(),
                                             c.getString("detail_bengkel").toString(),
                                             c.getString("detail_order").toString()

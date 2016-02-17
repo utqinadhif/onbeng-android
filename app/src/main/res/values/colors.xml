@@ -8,4 +8,10 @@
     <color name="black">#888</color>
     <color name="trans">#0000</color>
     <color name="white">#fff</color>
+
+    <color name="yellow">#ffe700</color>
+    <color name="blue">#0000ff</color>
+    <color name="green">#00ff00</color>
+    <color name="red">#ff0000</color>
+    <color name="purple">#9c27b0</color>
 </resources>
