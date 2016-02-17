@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
  */
 public class MyAdapter extends RecyclerView.Adapter {
     private final int VIEW_ITEM = 1;
-    private final int VIEW_PROG = 0;
 
     private ArrayList<DataRecycler> dataRecycler;
 
@@ -60,19 +58,14 @@ public class MyAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return dataRecycler.get(position) != null ? VIEW_ITEM : VIEW_PROG;
+        return VIEW_ITEM;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
-        if (viewType == VIEW_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_order, parent, false);
-            vh = new ListOrderViewHolder(v);
-        } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.progress_item, parent, false);
-            vh = new ProgressViewHolder(v);
-        }
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_order, parent, false);
+        vh = new ListOrderViewHolder(v);
         return vh;
     }
 
@@ -100,8 +93,6 @@ public class MyAdapter extends RecyclerView.Adapter {
             ((ListOrderViewHolder) holder).numberOrder.setText(String.valueOf(position + 1));
 
             ((ListOrderViewHolder) holder).list_order = listorder;
-        } else {
-            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
         }
     }
 
@@ -187,15 +178,6 @@ public class MyAdapter extends RecyclerView.Adapter {
                     v.getContext().startActivity(intent);
                 }
             });
-        }
-    }
-
-    public static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        public ProgressBar progressBar;
-
-        public ProgressViewHolder(View v) {
-            super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         }
     }
 

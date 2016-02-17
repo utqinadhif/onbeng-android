@@ -84,7 +84,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         swiper.setOnRefreshListener(this);
 
 //        get data from sp
-        splist = getSharedPreferences("list order", MODE_PRIVATE);
+        splist = getSharedPreferences("LIST", MODE_PRIVATE);
         String s = splist.getString("data list order", null);
         if (s != null) {
             try {
@@ -123,8 +123,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
             no_data.setVisibility(View.VISIBLE);
         }
 //        end of get data from sp
-        loadData();
         adapter.setOnLoadMoreListener(this);
+        loadData();
     }
 
     @Override
@@ -153,20 +153,10 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onLoadMore() {
-        dataRecycler.add(null);
-        adapter.notifyItemInserted(dataRecycler.size() - 1);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dataRecycler.remove(dataRecycler.size() - 1);
-                adapter.notifyItemRemoved(dataRecycler.size());
-                if (pageFetch == pageCurrent && pageCurrent < pageTotal) {
-                    loadData();
-                }
-                adapter.setLoaded();
-            }
-        }, 0);
+        if (pageFetch == pageCurrent && pageCurrent < pageTotal) {
+            loadData();
+        }
+        adapter.setLoaded();
     }
 
     private class GetData extends Curl {
@@ -192,7 +182,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         dataRecycler.clear();
                         adapter.notifyDataSetChanged();
 //                         parse to shared preference
-                        editor = getSharedPreferences("list order", Context.MODE_PRIVATE).edit();
+                        editor = getSharedPreferences("LIST", Context.MODE_PRIVATE).edit();
                         editor.putString("data list order", s);
                         editor.commit();
 //                        end of parse to shared preference

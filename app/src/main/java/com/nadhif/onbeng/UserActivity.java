@@ -28,6 +28,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     GpsTracker gps;
     double latitude, longitude;
     LatLng pos;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor, listOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         contact = (EditText) findViewById(R.id.yourContact);
         location = (EditText) findViewById(R.id.yourLocation);
 
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
         if (restoredText != null) {
             name.setText(sp.getString("name", null));
@@ -90,8 +92,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        SharedPreferences.Editor editor = getSharedPreferences("SESSION", MODE_PRIVATE).edit();
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        editor = getSharedPreferences("SESSION", MODE_PRIVATE).edit();
+        listOrder = getSharedPreferences("LIST", MODE_PRIVATE).edit();
 
         String n = String.valueOf(name.getText());
         String e = String.valueOf(email.getText());
@@ -108,6 +110,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             editor.putString("lat", null);
             editor.putString("lng", null);
             editor.commit();
+
+            listOrder.putString("data list order", null);
+            listOrder.commit();
 
             this.finish();
             HomeActivity.welcome.setText("");
