@@ -3,7 +3,6 @@ package com.nadhif.onbeng;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -41,7 +40,11 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     int pageCurrent = -1;
     int pageFetch = -1;
     int pageTotal = 0;
+    boolean refresh = false;
     boolean first = true;
+
+    SharedPreferences.Editor editor;
+    SharedPreferences splist, sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         no_data = (CardView) findViewById(R.id.nodata);
         handler = new Handler();
 
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
         cv = new ContentValues();
         if (restoredText != null) {
@@ -80,9 +83,47 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         swiper.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary));
         swiper.setOnRefreshListener(this);
 
+//        get data from sp
+        splist = getSharedPreferences("list order", MODE_PRIVATE);
+        String s = splist.getString("data list order", null);
+        if (s != null) {
+            try {
+                JSONObject json = new JSONObject(s);
+                if (json.getString("ok").equals("1")) {
+                    JSONObject result = json.getJSONObject("result");
+                    JSONArray college = result.getJSONArray("list");
+                    if (college.length() > 0) {
+                        no_data.setVisibility(View.GONE);
+                        for (int i = 0; i < college.length(); i++) {
+                            JSONObject c = college.getJSONObject(i);
+                            dataRecycler.add(new DataRecycler(
+                                            c.getString("id").toString(),
+                                            c.getString("logo_bengkel").toString(),
+                                            c.getString("name_bengkel").toString(),
+                                            c.getString("date_order").toString(),
+                                            c.getString("status_order").toString(),
+                                            c.getString("damage_order").toString(),
+                                            c.getString("detail_bengkel").toString(),
+                                            c.getString("detail_order").toString()
+                                    )
+                            );
+                            adapter.notifyItemInserted(dataRecycler.size());
+                        }
+                        pageTotal = result.getInt("total_page") - 1;
+                        pageFetch = pageCurrent;
+                    } else {
+                        no_data.setVisibility(View.VISIBLE);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            no_data.setVisibility(View.VISIBLE);
+        }
+//        end of get data from sp
         loadData();
         adapter.setOnLoadMoreListener(this);
-
     }
 
     @Override
@@ -104,7 +145,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        dataRecycler.clear();
+        refresh = true;
         pageCurrent = -1;
         loadData();
     }
@@ -138,10 +179,6 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                 swiper.setVisibility(View.VISIBLE);
             }
             swiper.setRefreshing(true);
-            if (first) {
-                pg.show();
-                first = false;
-            }
         }
 
         @Override
@@ -150,6 +187,17 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
+                    if (refresh || first) {
+                        dataRecycler.clear();
+                        adapter.notifyDataSetChanged();
+//                         parse to shared preference
+                        editor = getSharedPreferences("list order", Context.MODE_PRIVATE).edit();
+                        editor.putString("data list order", s);
+                        editor.commit();
+//                        end of parse to shared preference
+                        refresh = false;
+                        first = false;
+                    }
                     JSONObject result = json.getJSONObject("result");
                     JSONArray college = result.getJSONArray("list");
                     if (college.length() > 0) {
