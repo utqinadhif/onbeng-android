@@ -16,7 +16,7 @@ public class DetailOrderActivity extends AppCompatActivity {
     Intent intent;
     String id, detail_bengkel, detail_order, status, status_text;
     JSONObject json_detail_bengkel, json_detail_order;
-    TextView od_status, od_company, od_contact, od_email, od_location, od_price, od_latlang, od_y_location, od_y_latlng, od_y_totalDistance, od_y_total_price;
+    TextView od_status, od_company, od_contact, od_email, od_location, od_price, od_latlang, od_y_location, od_y_latlng, od_y_totalDistance, od_y_totalPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +51,11 @@ public class DetailOrderActivity extends AppCompatActivity {
         od_y_location = (TextView) findViewById(R.id.od_y_location);
         od_y_latlng = (TextView) findViewById(R.id.od_y_latlng);
         od_y_totalDistance = (TextView) findViewById(R.id.od_y_totalDistance);
-        od_y_total_price = (TextView) findViewById(R.id.od_y_totalPrice);
+        od_y_totalPrice = (TextView) findViewById(R.id.od_y_totalPrice);
 
         od_status.setText(status_text.substring(0, 1).toUpperCase() + status_text.substring(1));
         int sts = Integer.parseInt(status);
-        switch (sts){
+        switch (sts) {
             case 0:
                 od_status.setTextColor(ContextCompat.getColor(this, R.color.yellow));
                 break;
@@ -90,6 +90,8 @@ public class DetailOrderActivity extends AppCompatActivity {
             json_detail_order = new JSONObject(detail_order);
             od_y_location.setText(json_detail_order.getString("detail_location"));
             od_y_latlng.setText(json_detail_order.getString("lat") + ", " + json_detail_order.getString("lng"));
+            od_y_totalDistance.setText(json_detail_order.getString("distance"));
+            od_y_totalPrice.setText(json_detail_order.getString("total_price"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

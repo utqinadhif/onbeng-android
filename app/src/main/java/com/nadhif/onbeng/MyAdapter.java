@@ -1,8 +1,11 @@
 package com.nadhif.onbeng;
 
 import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,8 +36,14 @@ public class MyAdapter extends RecyclerView.Adapter {
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
 
-    public MyAdapter(ArrayList<DataRecycler> dataRecycler, RecyclerView recyclerView) {
+    static SharedPreferences sp;
+    static ContentValues cv;
+    static Context context;
+
+    public MyAdapter(ArrayList<DataRecycler> dataRecycler, RecyclerView recyclerView, Context context) {
         this.dataRecycler = dataRecycler;
+        sp = context.getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        this.context = context;
 
         if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
 
@@ -96,6 +108,19 @@ public class MyAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public void setLoaded() {
+        loading = false;
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataRecycler != null ? dataRecycler.size() : 0;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
     public static class ListOrderViewHolder extends RecyclerView.ViewHolder {
         public TextView logoBengkel, nameBengkel, dateOrder, damageOrder, numberOrder;
         public ImageView statusOrder;
@@ -113,9 +138,19 @@ public class MyAdapter extends RecyclerView.Adapter {
             damageOrder = (TextView) v.findViewById(R.id.damageOrder);
             numberOrder = (TextView) v.findViewById(R.id.numberOrder);
 
+            String restoredText = sp.getString("login", null);
+            cv = new ContentValues();
+            if (restoredText != null) {
+                cv.put("username", sp.getString("username", null));
+                cv.put("password", sp.getString("password", null));
+            }
+
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View vi) {
+                    cv.put("id_marker", sp.getString("id", null));
+                    cv.put("id", list_order.getId());
+
                     if (list_order.getStatusOrder().equals("0")) {
                         new AlertDialog.Builder(v.getContext())
                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -124,7 +159,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(v.getContext(), "cancel satu", Toast.LENGTH_SHORT).show();
+                                        new ChangeStatus(context, Config.url + "form/change_status/3", cv).execute();
                                     }
                                 })
                                 .setNegativeButton("No", null)
@@ -145,9 +180,9 @@ public class MyAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onClick(View v) {
                                 if (confirm.isChecked()) {
-                                    Toast.makeText(v.getContext(), "confirm", Toast.LENGTH_SHORT).show();
+                                    new ChangeStatus(context, Config.url + "form/change_status/2", cv).execute();
                                 } else if (cancel.isChecked()) {
-                                    Toast.makeText(v.getContext(), "cancel dua", Toast.LENGTH_SHORT).show();
+                                    new ChangeStatus(context, Config.url + "form/change_status/3", cv).execute();
                                 } else {
                                     Toast.makeText(v.getContext(), "No option selected.", Toast.LENGTH_SHORT).show();
                                 }
@@ -179,18 +214,24 @@ public class MyAdapter extends RecyclerView.Adapter {
                 }
             });
         }
-    }
 
-    public void setLoaded() {
-        loading = false;
-    }
+        private class ChangeStatus extends Curl {
+            public ChangeStatus(Context context, String url, ContentValues cv) {
+                super(context, url, cv);
+            }
 
-    @Override
-    public int getItemCount() {
-        return dataRecycler != null ? dataRecycler.size() : 0;
-    }
-
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        this.onLoadMoreListener = onLoadMoreListener;
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                try {
+                    JSONObject json = new JSONObject(s);
+                    if (json.getString("ok").equals("1")) {
+                        Toast.makeText(context, json.getString("result"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

@@ -74,7 +74,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MyAdapter(dataRecycler, recyclerView);
+        adapter = new MyAdapter(dataRecycler, recyclerView, this);
         recyclerView.setAdapter(adapter);
 
         swiper = (SwipeRefreshLayout) findViewById(R.id.list_order_swipe);

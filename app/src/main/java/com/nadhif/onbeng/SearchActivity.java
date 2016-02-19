@@ -52,7 +52,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     PolylineOptions poliop;
     Polyline di;
     EditText dLocation, dDamage;
-    String id_m;
+    String id_m, fdistance, ftotal_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,7 +247,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     if (!id_marker.equals("0")) {
                         cv.put("id_marker", id_marker);
                     }
-                    new searchPrice(this, Config.url + "form/search_price", cv).execute();
+                    new SearchPrice(this, Config.url + "form/search_price", cv).execute();
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.pleaseLogout), Toast.LENGTH_LONG).show();
 
@@ -276,8 +276,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             cv.put("detail_location", dLocation.getText().toString());
             cv.put("latlng", "(" + sp.getString("lat", null) + ", " + sp.getString("lng", null) + ")");
             cv.put("type", type);
+            cv.put("distance", fdistance);
+            cv.put("total_price", ftotal_price);
 
-            new order(this, Config.url + "form/request", cv).execute();
+            new Order(this, Config.url + "form/order", cv).execute();
         } else if (v == cancel_confirm) {
             dialog.dismiss();
         }
@@ -417,10 +419,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private class searchPrice extends Curl {
+    private class SearchPrice extends Curl {
         Context context;
 
-        public searchPrice(Context c, String url, ContentValues post) {
+        public SearchPrice(Context c, String url, ContentValues post) {
             super(c, url, post);
             context = c;
         }
@@ -478,6 +480,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         price.setText(c.getString("price"));
                         amount.setText(c.getString("amount"));
                         id_m = c.getString("id_marker");
+                        fdistance = c.getString("distance");
+                        ftotal_price = c.getString("amount");
                     }
 
                     ok_confirm.setOnClickListener((View.OnClickListener) context);
@@ -491,8 +495,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private class order extends Curl {
-        public order(Context c, String url, ContentValues post) {
+    private class Order extends Curl {
+        public Order(Context c, String url, ContentValues post) {
             super(c, url, post);
         }
 

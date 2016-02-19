@@ -119,7 +119,7 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                         editor.commit();
 
                         getActivity().finish();
-                        if(HomeActivity.welcome.getVisibility() == View.GONE){
+                        if (HomeActivity.welcome.getVisibility() == View.GONE) {
                             HomeActivity.welcome.setVisibility(View.VISIBLE);
                         }
                         HomeActivity.welcome.setText("Welcome " + c.getString("name"));
