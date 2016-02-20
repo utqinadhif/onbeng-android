@@ -53,4 +53,12 @@ public class DataRecycler {
     public String getDetail_order() {
         return detail_order;
     }
+
+    public void setStatusOrderText(String statusOrderText) {
+        this.statusOrderText = statusOrderText;
+    }
+
+    public void setStatusOrder(String statusOrder) {
+        this.statusOrder = statusOrder;
+    }
 }
