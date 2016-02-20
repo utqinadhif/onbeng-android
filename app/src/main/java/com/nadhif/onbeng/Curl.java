@@ -67,7 +67,7 @@ public class Curl extends AsyncTask<Void, Void, String> {
             if (!post.isEmpty()) {
                 conn.setDoOutput(true);
                 try {
-                    OutputStreamWriter osw = null;
+                    OutputStreamWriter osw;
                     osw = new OutputStreamWriter(conn.getOutputStream());
                     osw.write(post);
                     osw.flush();
