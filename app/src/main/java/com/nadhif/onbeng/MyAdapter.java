@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter {
     private final int VIEW_ITEM = 1;
 
-    private ArrayList<DataRecycler> dataRecycler;
+    private static ArrayList<DataRecycler> dataRecycler;
 
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
@@ -148,9 +148,6 @@ public class MyAdapter extends RecyclerView.Adapter {
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View vi) {
-                    cv.put("id_marker", sp.getString("id", null));
-                    cv.put("id", list_order.getId());
-
                     if (list_order.getStatusOrder().equals("0")) {
                         new AlertDialog.Builder(v.getContext())
                                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -159,7 +156,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        new ChangeStatus(context, Config.url + "form/change_status/3", cv).execute();
+                                        new ChangeStatus(context, Config.url + "form/change_status/3/" + list_order.getId(), cv).execute();
                                     }
                                 })
                                 .setNegativeButton("No", null)
@@ -180,9 +177,9 @@ public class MyAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onClick(View v) {
                                 if (confirm.isChecked()) {
-                                    new ChangeStatus(context, Config.url + "form/change_status/2", cv).execute();
+                                    new ChangeStatus(context, Config.url + "form/change_status/2/" + list_order.getId(), cv).execute();
                                 } else if (cancel.isChecked()) {
-                                    new ChangeStatus(context, Config.url + "form/change_status/3", cv).execute();
+                                    new ChangeStatus(context, Config.url + "form/change_status/3/" + list_order.getId(), cv).execute();
                                 } else {
                                     Toast.makeText(v.getContext(), "No option selected.", Toast.LENGTH_SHORT).show();
                                 }
@@ -226,7 +223,12 @@ public class MyAdapter extends RecyclerView.Adapter {
                 try {
                     JSONObject json = new JSONObject(s);
                     if (json.getString("ok").equals("1")) {
-                        Toast.makeText(context, json.getString("result"), Toast.LENGTH_LONG).show();
+                        JSONObject c = json.getJSONObject("result");
+                        int[] im = {R.drawable.waiting, R.drawable.process, R.drawable.confirm, R.drawable.cancel, R.drawable.done};
+                        statusOrder.setImageResource(im[Integer.parseInt(c.getString("status"))]);
+                        int g = getAdapterPosition();
+                        dataRecycler.get(g).setStatusOrder(c.getString("status"));
+                        dataRecycler.get(g).setStatusOrderText(c.getString("status_text"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
