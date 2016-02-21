@@ -183,6 +183,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                                 } else {
                                     Toast.makeText(v.getContext(), "No option selected.", Toast.LENGTH_SHORT).show();
                                 }
+                                dialog.dismiss();
                             }
                         });
                         dismiss_status.setOnClickListener(new View.OnClickListener() {
