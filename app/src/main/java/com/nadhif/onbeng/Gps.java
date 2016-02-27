@@ -19,7 +19,7 @@ import android.util.Log;
 /**
  * Created by nadhif on 10/12/2015.
  */
-public class GpsTracker extends Service implements LocationListener {
+public class Gps extends Service implements LocationListener {
     private final Context mContext;
 
     // flag for GPS status
@@ -44,7 +44,7 @@ public class GpsTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GpsTracker(Context context) {
+    public Gps(Context context) {
         this.mContext = context;
         getLocation();
     }
@@ -116,7 +116,7 @@ public class GpsTracker extends Service implements LocationListener {
     public void stopUsingGPS() {
         if (locationManager != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                locationManager.removeUpdates(GpsTracker.this);
+                locationManager.removeUpdates(Gps.this);
             }
         }
     }
