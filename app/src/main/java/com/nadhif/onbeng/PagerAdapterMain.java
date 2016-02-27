@@ -1,6 +1,7 @@
 package com.nadhif.onbeng;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,18 +11,21 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class PagerAdapterMain extends FragmentPagerAdapter {
     Context _context;
-    GpsTracker gps;
+    Gps gps;
     double latitude, longitude;
+    SharedPreferences slatlng;
 
     public PagerAdapterMain(FragmentManager fm, Context context) {
         super(fm);
 
-        gps = new GpsTracker(context);
-        if (gps.canGetLocation()) {
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
-        } else {
-            gps.showSettingsAlert();
+        slatlng = context.getSharedPreferences("LOCATION", Context.MODE_PRIVATE);
+        String lt = slatlng.getString("latitude", null);
+        String lg = slatlng.getString("longitude", null);
+        if (lt != null && lg != null) {
+            latitude = Double.parseDouble(lt);
+            longitude = Double.parseDouble(lg);
+        }else{
+            latitude = longitude = 0;
         }
         _context = context;
     }

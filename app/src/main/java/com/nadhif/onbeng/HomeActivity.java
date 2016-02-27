@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +20,15 @@ import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
     ImageButton search, user, list, about;
-    GpsTracker gps;
+    exGps exgps;
     ImageView banner;
     public static TextView welcome;
-    SharedPreferences.Editor editor;
-    SharedPreferences surl;
+    SharedPreferences.Editor editor, elatlng;
+    SharedPreferences surl, sp;
     Dialog dialog;
     EditText host;
     Button hostSave;
+    double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         banner = (ImageView) findViewById(R.id.banner);
         banner.setOnLongClickListener(this);
 
-        gps = new GpsTracker(this);
-        if (!gps.canGetLocation()) {
-            gps.showSettingsAlert();
+        exgps = new exGps(this);
+        if (exgps.canGetLocation()) {
+            latitude = exgps.getLat();
+            longitude = exgps.getLng();
+            setSharepreferenceLocation(latitude, longitude);
+        } else {
+            exgps.showSettingsAlert();
         }
 
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
         welcome = (TextView) findViewById(R.id.welcome);
         if (restoredText != null) {
@@ -79,6 +85,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             editor.commit();
             Config.url = Url;
         }
+    }
+
+    public void setSharepreferenceLocation(double lat, double lng) {
+        elatlng = getSharedPreferences("LOCATION", MODE_PRIVATE).edit();
+        elatlng.putString("latitude", String.valueOf(lat));
+        elatlng.putString("longitude", String.valueOf(lng));
+        elatlng.commit();
     }
 
     private void returnExit() {
@@ -157,5 +170,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             dialog.show();
         }
         return false;
+    }
+
+    private class exGps extends Gps {
+        public exGps(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            setSharepreferenceLocation(location.getLatitude(), location.getLongitude());
+        }
     }
 }

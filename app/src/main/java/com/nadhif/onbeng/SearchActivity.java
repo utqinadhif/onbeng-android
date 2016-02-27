@@ -47,12 +47,12 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     ArrayList<DataMap> dataMaps = new ArrayList<>();
     DataMap dataItemMaps;
     LatLng focus, des;
-    GpsTracker gps;
     double latitude, longitude, la, lo;
     PolylineOptions poliop;
     Polyline di;
     EditText dLocation, dDamage;
     String id_m, fdistance, ftotal_price;
+    SharedPreferences sp, slatlng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +105,14 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         btnOrder = (Button) findViewById(R.id.btnOrder);
         btnOrder.setOnClickListener(this);
 
-        gps = new GpsTracker(this);
-        if (gps.canGetLocation()) {
-            latitude = gps.getLatitude();
-            longitude = gps.getLongitude();
-        } else {
-            gps.showSettingsAlert();
+        slatlng = getSharedPreferences("LOCATION", MODE_PRIVATE);
+        String lt = slatlng.getString("latitude", null);
+        String lg = slatlng.getString("longitude", null);
+        if (lt != null && lg != null) {
+            latitude = Double.parseDouble(lt);
+            longitude = Double.parseDouble(lg);
+        }else{
+            latitude = longitude = 0;
         }
     }
 
@@ -127,7 +129,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
         if (latitude != 0.0 || longitude != 0.0) {
             focus = new LatLng(latitude, longitude);
@@ -172,7 +174,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onClick(View v) {
         String id_marker = (String) title.getText();
-        SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
+        sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
         if (v == detail) {
             if (!id_marker.equals("0")) {
@@ -411,10 +413,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 LatLng p = new LatLng((((double) lat / 1E5)), (((double) lng / 1E5)));
                 poly.add(p);
             }
-
-//            for (int i = 0; i < poly.size(); i++) {
-//                Log.i("Location", "Point sent: Latitude: " + poly.get(i).latitude + " Longitude: " + poly.get(i).longitude);
-//            }
             return poly;
         }
     }

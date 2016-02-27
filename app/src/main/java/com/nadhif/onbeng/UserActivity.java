@@ -25,10 +25,10 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     TextView logout;
     Button updateProfile;
     EditText name, email, password, contact, location;
-    GpsTracker gps;
+    Gps gps;
     double latitude, longitude;
     LatLng pos;
-    SharedPreferences sp;
+    SharedPreferences sp, slatlng;
     SharedPreferences.Editor editor, listOrder;
 
     @Override
@@ -42,12 +42,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before);
 
-        gps = new GpsTracker(this);
-        if (gps.canGetLocation()) {
-            this.latitude = gps.getLatitude();
-            this.longitude = gps.getLongitude();
-        } else {
-            gps.showSettingsAlert();
+        slatlng = getSharedPreferences("LOCATION", MODE_PRIVATE);
+        String lt = slatlng.getString("latitude", null);
+        String lg = slatlng.getString("longitude", null);
+        if (lt != null && lg != null) {
+            latitude = Double.parseDouble(lt);
+            longitude = Double.parseDouble(lg);
+        }else{
+            latitude = longitude = 0;
         }
 
         logout = (TextView) findViewById(R.id.logout);
