@@ -242,7 +242,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 if (restoredText != null) {
                     ContentValues cv = new ContentValues();
                     cv.put("username", sp.getString("username", null));
-                    cv.put("password", sp.getString("password", null));
+                    cv.put("password", sp.getString("passwordh", null));
                     cv.put("latlng", "(" + sp.getString("lat", null) + ", " + sp.getString("lng", null) + ")");
                     if (!id_marker.equals("0")) {
                         cv.put("id_marker", id_marker);
@@ -269,7 +269,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 type = 1;
             }
             cv.put("username", sp.getString("username", null));
-            cv.put("password", sp.getString("password", null));
+            cv.put("password", sp.getString("passwordh", null));
 
             cv.put("id_marker", id_markers);
             cv.put("damage", dDamage.getText().toString());

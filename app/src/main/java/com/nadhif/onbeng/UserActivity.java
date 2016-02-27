@@ -95,16 +95,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         editor = getSharedPreferences("SESSION", MODE_PRIVATE).edit();
         listOrder = getSharedPreferences("LIST", MODE_PRIVATE).edit();
 
-        String n = String.valueOf(name.getText());
-        String e = String.valueOf(email.getText());
-        String p = String.valueOf(password.getText());
-        String c = String.valueOf(contact.getText());
-        String l = String.valueOf(location.getText());
+        String n = name.getText().toString();
+        String e = email.getText().toString();
+        String p = password.getText().toString();
+        String c = contact.getText().toString();
+        String l = location.getText().toString();
 
         if (v == logout) {
             editor.putString("login", null);
             editor.putString("username", null);
             editor.putString("password", null);
+            editor.putString("passwordh", null);
             editor.putString("contact", null);
             editor.putString("location", null);
             editor.putString("lat", null);
@@ -136,7 +137,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 cv.put("id", sp.getString("id", null));
                 cv.put("name", n);
                 cv.put("username", e);
-                cv.put("password", p);
+                cv.put("password", Config.createHash(p));
                 cv.put("contact", c);
                 cv.put("location", l);
                 cv.put("latlng", "(" + pos.latitude + ", " + pos.longitude + ")");
@@ -167,7 +168,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                         editor.putString("id", c.getString("id"));
                         editor.putString("name", c.getString("name"));
                         editor.putString("username", c.getString("username"));
-                        editor.putString("password", c.getString("pass"));
+                        editor.putString("password", password.getText().toString());
+                        editor.putString("passwordh", c.getString("pass"));
                         editor.putString("contact", c.getString("contact"));
                         editor.putString("location", c.getString("location"));
                         editor.putString("lat", String.valueOf(pos.latitude));

@@ -64,13 +64,13 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String e = String.valueOf(email.getText());
-        String p = String.valueOf(password.getText());
+        String e = email.getText().toString();
+        String p = password.getText().toString();
         if (v == login) {
             if (!e.equals("") && !p.equals("")) {
                 ContentValues cv = new ContentValues();
                 cv.put("username", e);
-                cv.put("password", p);
+                cv.put("password", Config.createHash(p));
                 new CurlLogin(getContext(), Config.url + "log_user/login", cv).execute();
             } else {
                 Toast.makeText(getContext(), "One of data is empty.", Toast.LENGTH_LONG).show();
@@ -99,7 +99,8 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
                         editor.putString("id", c.getString("id"));
                         editor.putString("name", c.getString("name"));
                         editor.putString("username", c.getString("username"));
-                        editor.putString("password", c.getString("pass"));
+                        editor.putString("password", password.getText().toString());
+                        editor.putString("passwordh", c.getString("pass"));
                         editor.putString("contact", c.getString("contact"));
                         editor.putString("location", c.getString("location"));
                         editor.putString("lat", String.valueOf(pos.latitude));

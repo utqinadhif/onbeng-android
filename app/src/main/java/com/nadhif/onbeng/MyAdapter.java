@@ -142,7 +142,7 @@ public class MyAdapter extends RecyclerView.Adapter {
             cv = new ContentValues();
             if (restoredText != null) {
                 cv.put("username", sp.getString("username", null));
-                cv.put("password", sp.getString("password", null));
+                cv.put("password", sp.getString("passwordh", null));
             }
 
             v.setOnLongClickListener(new View.OnLongClickListener() {

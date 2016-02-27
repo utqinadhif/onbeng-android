@@ -65,7 +65,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         cv = new ContentValues();
         if (restoredText != null) {
             cv.put("username", sp.getString("username", null));
-            cv.put("password", sp.getString("password", null));
+            cv.put("password", sp.getString("passwordh", null));
         }
 
         recyclerView = (RecyclerView) findViewById(R.id.myRecylerView);

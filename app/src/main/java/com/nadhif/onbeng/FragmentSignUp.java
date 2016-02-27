@@ -71,18 +71,18 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String n = String.valueOf(name.getText());
-        String e = String.valueOf(email.getText());
-        String p = String.valueOf(password.getText());
-        String c = String.valueOf(contact.getText());
-        String l = String.valueOf(location.getText());
+        String n = name.getText().toString();
+        String e = email.getText().toString();
+        String p = password.getText().toString();
+        String c = contact.getText().toString();
+        String l = location.getText().toString();
 
         if (v == signup) {
             if (!n.equals("") && !e.equals("") && !p.equals("") && !c.equals("") && !l.equals("")) {
                 ContentValues cv = new ContentValues();
                 cv.put("name", n);
                 cv.put("username", e);
-                cv.put("password", p);
+                cv.put("password", Config.createHash(p));
                 cv.put("contact", c);
                 cv.put("location", l);
                 cv.put("latlng", "(" + pos.latitude + ", " + pos.longitude + ")");
@@ -111,7 +111,8 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                         editor.putString("id", c.getString("id"));
                         editor.putString("name", c.getString("name"));
                         editor.putString("username", c.getString("username"));
-                        editor.putString("password", c.getString("pass"));
+                        editor.putString("password", password.getText().toString());
+                        editor.putString("passwordh", c.getString("pass"));
                         editor.putString("contact", c.getString("contact"));
                         editor.putString("location", c.getString("location"));
                         editor.putString("lat", String.valueOf(pos.latitude));
