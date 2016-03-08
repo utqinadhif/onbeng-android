@@ -1,6 +1,8 @@
 package com.nadhif.onbeng;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -11,20 +13,18 @@ import java.security.NoSuchAlgorithmException;
  * Created by nadhif on 01/12/2015.
  */
 public class Config {
-    String googleUrl, sensor, originLat, originLng, destinationLat, destinationLng;
-
     public static String url;
 
-    public String googleUrl(LatLng o, LatLng d) {
-        originLat = Double.toString(o.latitude);
-        originLng = Double.toString(o.longitude);
+    public static String googleUrl(LatLng o, LatLng d) {
+        String originLat = Double.toString(o.latitude);
+        String originLng = Double.toString(o.longitude);
 
-        destinationLat = Double.toString(d.latitude);
-        destinationLng = Double.toString(d.longitude);
+        String destinationLat = Double.toString(d.latitude);
+        String destinationLng = Double.toString(d.longitude);
 
-        sensor = "false";
+        String sensor = "false";
 
-        googleUrl = "https://maps.googleapis.com/maps/api/directions/json" +
+        String googleUrl = "https://maps.googleapis.com/maps/api/directions/json" +
                 "?origin=" + originLat + "," + originLng +
                 "&destination=" + destinationLat + "," + destinationLng +
                 "&sensor=" + sensor;
@@ -59,6 +59,10 @@ public class Config {
         String newOrmd5 = new StringBuilder(newOr).reverse().toString();
         String pass = 38 + originmd5.substring(0, 7) + origin.substring(8, 15) + newOr.substring(16, 23) + newOrmd5.substring(24, 31);
         return pass;
+    }
+
+    public static void toast(Context context, String s) {
+        Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
     }
 
     public static void log(String s) {

@@ -13,12 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,6 +53,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     EditText dLocation, dDamage;
     String id_m, fdistance, ftotal_price;
     SharedPreferences sp, slatlng;
+    Marker curmar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +70,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mMap = mapFragment.getMap();
+            mMap.getUiSettings().setAllGesturesEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
-            mMap.getUiSettings().setMapToolbarEnabled(true);
 
             mScrollView = (ScrollView) findViewById(R.id.scroll); //parent scrollview in xml, give your scrollview id value
 
@@ -83,7 +84,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     });
             mapFragment.getMapAsync(this);
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+           Config.toast(this, e.getMessage());
         }
 
         title = (TextView) findViewById(R.id.titleMap);
@@ -111,7 +112,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         if (lt != null && lg != null) {
             latitude = Double.parseDouble(lt);
             longitude = Double.parseDouble(lg);
-        }else{
+        } else {
             latitude = longitude = 0;
         }
     }
@@ -154,13 +155,14 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 String titles = String.valueOf(marker.getTitle());
                 switch (snippet) {
                     case "1":
-                        Toast.makeText(getApplicationContext(), "You in Here", Toast.LENGTH_SHORT).show();
+                        Config.toast(getApplicationContext(), "You in Here");
                         break;
                     default:
                         if (di != null) {
                             di.remove();
-                            mMap.getUiSettings().isMapToolbarEnabled();
                         }
+                        curmar = marker;
+                        mMap.getUiSettings().setMapToolbarEnabled(true);
                         resetButton.setVisibility(View.VISIBLE);
                         title.setText(snippet);
                         bengkelName.setText(titles);
@@ -179,8 +181,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         if (v == detail) {
             if (!id_marker.equals("0")) {
                 dialog = new Dialog(this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.pop_detail);
-                dialog.setTitle("Data Bengkel");
 
                 bengkelName = (TextView) dialog.findViewById(R.id.bengkelName);
                 company = (TextView) dialog.findViewById(R.id.bengkelCompany);
@@ -207,15 +209,18 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
                 dialog.show();
             } else {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.fastOrder) + " selected", Toast.LENGTH_LONG).show();
+                Config.toast(getApplicationContext(), getResources().getString(R.string.fastOrder) + " selected");
             }
         } else if (v == resetButton) {
-            ImageButton resetButton = (ImageButton) v;
             resetButton.setVisibility(View.INVISIBLE);
             title.setText("0");
             bengkelName.setText(getResources().getString(R.string.fastOrder));
             if (di != null) {
                 di.remove();
+            }
+            if (curmar != null) {
+                curmar.hideInfoWindow();
+                mMap.getUiSettings().setMapToolbarEnabled(false);
             }
         } else if (v == ok) {
             dialog.dismiss();
@@ -231,11 +236,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         des = new LatLng(Double.parseDouble(lt), Double.parseDouble(lg));
                     }
                 }
-
-                String googleUrl = new Config().googleUrl(focus, des);
-                new Direction(this, googleUrl).execute();
+                new Direction(this, Config.googleUrl(focus, des)).execute();
             } else {
-                Toast.makeText(getApplicationContext(), "No bengkel selected", Toast.LENGTH_LONG).show();
+                Config.toast(getApplicationContext(), "No bengkel selected");
             }
         } else if (v == btnOrder) {
             dDamage = (EditText) findViewById(R.id.damage);
@@ -251,13 +254,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     }
                     new SearchPrice(this, Config.url + "form/search_price", cv).execute();
                 } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.pleaseLogout), Toast.LENGTH_LONG).show();
+                    Config.toast(getApplicationContext(), getResources().getString(R.string.pleaseLogout));
 
                     this.finish();
                     startActivity(new Intent(getApplicationContext(), LogActivity.class));
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Your detail is empty", Toast.LENGTH_LONG).show();
+                Config.toast(getApplicationContext(), "Your detail is empty");
             }
         } else if (v == ok_confirm) {
             ContentValues cv = new ContentValues();
@@ -433,8 +436,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 if (json.getString("ok").equals("1")) {
                     SharedPreferences sp = getSharedPreferences("SESSION", MODE_PRIVATE);
                     dialog = new Dialog(context);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.pop_confirm);
-                    dialog.setTitle("Detail Order");
 
                     name = (TextView) dialog.findViewById(R.id.yourName);
                     damage = (TextView) dialog.findViewById(R.id.yourDamage);
@@ -504,7 +507,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.orderProcessed), Toast.LENGTH_LONG).show();
+                    Config.toast(getApplicationContext(), getResources().getString(R.string.orderProcessed));
                     returnExit();
                 }
             } catch (JSONException e) {

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -73,7 +72,7 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
                 cv.put("password", Config.createHash(p));
                 new CurlLogin(getContext(), Config.url + "log_user/login", cv).execute();
             } else {
-                Toast.makeText(getContext(), "One of data is empty.", Toast.LENGTH_LONG).show();
+                Config.toast(getContext(), "One of data is empty.");
             }
 
         }
@@ -107,7 +106,7 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
                         editor.putString("lng", String.valueOf(pos.longitude));
                         editor.commit();
 
-                        Toast.makeText(getContext(), "Data Found\nWelcome " + c.getString("name"), Toast.LENGTH_LONG).show();
+                        Config.toast(getContext(), "Data Found\nWelcome " + c.getString("name"));
                         if(HomeActivity.welcome.getVisibility() == View.GONE){
                             HomeActivity.welcome.setVisibility(View.VISIBLE);
                         }
@@ -119,7 +118,7 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
                     email.setText("");
                     password.setText("");
                     email.requestFocus();
-                    Toast.makeText(getContext(), json.getString("msg"), Toast.LENGTH_LONG).show();
+                    Config.toast(getContext(), json.getString("msg"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

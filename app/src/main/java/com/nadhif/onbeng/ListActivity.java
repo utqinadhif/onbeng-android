@@ -113,6 +113,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         pageTotal = result.getInt("total_page") - 1;
                         pageFetch = pageCurrent;
                     } else {
+                        Config.toast(this, "Empty list!");
                         no_data.setVisibility(View.VISIBLE);
                     }
                 }
@@ -160,8 +161,10 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private class GetData extends Curl {
+        Context context;
         public GetData(Context context, String url, ContentValues cv) {
             super(context, url, cv);
+            this.context = context;
         }
 
         @Override
@@ -213,6 +216,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         pageFetch = pageCurrent;
                         swiper.setRefreshing(false);
                     } else {
+                        Config.toast(context, "Empty list!");
                         no_data.setVisibility(View.VISIBLE);
                     }
                 }

@@ -11,12 +11,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
     ImageButton search, user, list, about;
@@ -104,6 +104,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Stop the activity
+                        exgps.stopUsingGPS();
                         finish();
                         System.exit(0);
                     }
@@ -135,7 +136,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (restoredText != null) {
                 startActivity(new Intent(getApplicationContext(), ListActivity.class));
             } else {
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.pleaseLogout), Toast.LENGTH_LONG).show();
+                Config.toast(getApplicationContext(), getResources().getString(R.string.pleaseLogout));
                 startActivity(new Intent(getApplicationContext(), LogActivity.class));
             }
         } else if (v == about) {
@@ -151,10 +152,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        exgps.getLocation();
+    }
+
+    @Override
     public boolean onLongClick(View v) {
         if (v == banner) {
             dialog = new Dialog(this);
-            dialog.setTitle("Change Host");
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.pop_change_host);
 
             surl = getSharedPreferences("URL", MODE_PRIVATE);
@@ -180,6 +187,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onLocationChanged(Location location) {
             setSharepreferenceLocation(location.getLatitude(), location.getLongitude());
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            if (status == 2) {
+                exgps.useGPS();
+            } else {
+                exgps.useNetwork();
+                exgps.useGPS();
+            }
         }
     }
 }

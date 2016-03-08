@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -181,7 +180,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                                 } else if (cancel.isChecked()) {
                                     new ChangeStatus(context, Config.url + "form/change_status/3/" + list_order.getId(), cv).execute();
                                 } else {
-                                    Toast.makeText(v.getContext(), "No option selected.", Toast.LENGTH_SHORT).show();
+                                    Config.toast(v.getContext(), "No option selected.");
                                 }
                                 dialog.dismiss();
                             }
@@ -194,7 +193,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                         });
                         dialog.show();
                     } else if (list_order.getStatusOrder().equals("2") || list_order.getStatusOrder().equals("3") || list_order.getStatusOrder().equals("4")) {
-                        Toast.makeText(v.getContext(), "In this status, your can't change the ststus.", Toast.LENGTH_SHORT).show();
+                        Config.toast(v.getContext(), "In this status, your can't change the ststus.");
                     }
                     return false;
                 }
