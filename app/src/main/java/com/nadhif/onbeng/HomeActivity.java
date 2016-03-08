@@ -28,7 +28,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     Dialog dialog;
     EditText host;
     Button hostSave;
-    double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         exgps = new exGps(this);
         if (exgps.canGetLocation()) {
-            latitude = exgps.getLat();
-            longitude = exgps.getLng();
-            setSharepreferenceLocation(latitude, longitude);
+            setSharepreferenceLocation(exgps.getLocation().getLatitude(), exgps.getLocation().getLongitude());
         } else {
             exgps.showSettingsAlert();
         }
