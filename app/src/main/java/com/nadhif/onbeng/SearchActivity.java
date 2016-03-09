@@ -156,19 +156,21 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 switch (snippet) {
                     case "1":
                         Config.toast(getApplicationContext(), "You in Here");
+                        mMap.getUiSettings().setMapToolbarEnabled(false);
                         break;
                     default:
                         if (di != null) {
                             di.remove();
                         }
                         curmar = marker;
+                        marker.showInfoWindow();
                         mMap.getUiSettings().setMapToolbarEnabled(true);
                         resetButton.setVisibility(View.VISIBLE);
                         title.setText(snippet);
                         bengkelName.setText(titles);
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }
