@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -163,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                                 .show();
                     } else if (list_order.getStatusOrder().equals("1")) {
                         dialog = new Dialog(v.getContext());
-                        dialog.setTitle("Change Your Order Status");
+                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.pop_two_option);
 
                         confirm = (RadioButton) dialog.findViewById(R.id.change_confirm);
