@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     SharedPreferences.Editor editor;
     SharedPreferences splist, sp;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         swiper.setColorSchemeResources(R.color.white, R.color.colorAccent);
         swiper.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary));
         swiper.setOnRefreshListener(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
 
 //        get data from sp
         splist = getSharedPreferences("LIST", MODE_PRIVATE);
@@ -162,6 +166,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     private class GetData extends Curl {
         Context context;
+
         public GetData(Context context, String url, ContentValues cv) {
             super(context, url, cv);
             this.context = context;
@@ -173,6 +178,9 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                 swiper.setVisibility(View.VISIBLE);
             }
             swiper.setRefreshing(true);
+            if (first) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -181,6 +189,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
+                    progressBar.setVisibility(View.GONE);
                     if (refresh || first) {
                         dataRecycler.clear();
                         adapter.notifyDataSetChanged();

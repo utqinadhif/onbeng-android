@@ -50,11 +50,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         banner.setOnLongClickListener(this);
 
         exgps = new exGps(this);
-        if (exgps.canGetLocation()) {
-            setSharepreferenceLocation(exgps.getLocation().getLatitude(), exgps.getLocation().getLongitude());
-        } else {
-            exgps.showSettingsAlert();
-        }
 
         sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
@@ -81,6 +76,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             editor.putString("url", Url);
             editor.commit();
             Config.url = Url;
+        }
+    }
+
+    public void cekGps() {
+        exgps.getLocation();
+        if (exgps.canGetLocation()) {
+            setSharepreferenceLocation(exgps.getLat(), exgps.getLng());
+        } else {
+            exgps.showSettingsAlert();
         }
     }
 
@@ -151,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        exgps.getLocation();
+        this.cekGps();
     }
 
     @Override
@@ -185,6 +189,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         public void onLocationChanged(Location location) {
             setSharepreferenceLocation(location.getLatitude(), location.getLongitude());
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             if (status == 2) {
