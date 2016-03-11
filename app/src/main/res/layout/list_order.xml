@@ -1,106 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/lima">
+    ripple:rv_color="@color/colorPrimary"
+    ripple:rv_zoomDuration="10"
+    ripple:rv_type="rectangle">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/lima">
+        android:layout_marginBottom="@dimen/lima">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/logoBengkel"
-                    android:layout_width="@dimen/kotak"
-                    android:layout_height="@dimen/kotak"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:text="NF"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/standart" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/nameBengkel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nadhif Fisip"
-                    android:textSize="@dimen/standart" />
-
-                <TextView
-                    android:id="@+id/dateOrder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/lima"
-                    android:text="12-11-2016"
-                    android:textSize="@dimen/normal" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/numberOrder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="1"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/normal" />
-
-                <ImageView
-                    android:id="@+id/statusOrder"
-                    android:layout_width="@dimen/standart"
-                    android:layout_height="@dimen/standart"
-                    android:src="@drawable/confirm" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/lima"
-            android:background="@color/colorPrimary" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="@dimen/lima">
 
-            <TextView
-                android:id="@+id/damageOrder"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="fill_horizontal"
-                android:text="rusak berat dan ganti spion habshfdhsfhdc sdgsdghs" />
-        </LinearLayout>
-    </LinearLayout>
+                android:orientation="horizontal">
 
-</android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/logoBengkel"
+                        android:layout_width="@dimen/kotak"
+                        android:layout_height="@dimen/kotak"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="NF"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/standart" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nameBengkel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nadhif Fisip"
+                        android:textSize="@dimen/standart" />
+
+                    <TextView
+                        android:id="@+id/dateOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/lima"
+                        android:text="12-11-2016"
+                        android:textSize="@dimen/normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/numberOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="1"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/normal" />
+
+                    <ImageView
+                        android:id="@+id/statusOrder"
+                        android:layout_width="@dimen/standart"
+                        android:layout_height="@dimen/standart"
+                        android:src="@drawable/confirm" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/lima"
+                android:background="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/lima">
+
+                <TextView
+                    android:id="@+id/damageOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="fill_horizontal"
+                    android:text="rusak berat dan ganti spion habshfdhsfhdc sdgsdghs" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</com.andexert.library.RippleView>

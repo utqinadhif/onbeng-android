@@ -60,146 +60,173 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/content_image"
+            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lima"
-                android:padding="@dimen/lima">
+                ripple:rv_color="@color/colorPrimary"
+                ripple:rv_type="rectangle"
+                ripple:rv_zoomDuration="10">
 
-                <ImageView
-                    android:id="@+id/banner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@color/trans"
-                    android:src="@drawable/onbeng" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/content_first"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lima">
-
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/content_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/lima"
+                    android:padding="@dimen/lima">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/banner"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:layout_gravity="center"
+                        android:background="@color/trans"
+                        android:src="@drawable/onbeng" />
+                </android.support.v7.widget.CardView>
+            </com.andexert.library.RippleView>
 
-                        <ImageButton
-                            android:id="@+id/search"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/trans"
-                            android:padding="@dimen/normal"
-                            android:src="@drawable/search" />
-
-                        <TextView
-                            android:id="@+id/sub_search"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:text="@string/sub_search"
-                            android:textColor="@color/colorPrimary" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/user"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/trans"
-                            android:padding="@dimen/normal"
-                            android:src="@drawable/user" />
-
-                        <TextView
-                            android:id="@+id/sub_user"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:text="@string/sub_user"
-                            android:textColor="@color/colorPrimary" />
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/content_second"
+            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/lima">
+                ripple:rv_color="@color/colorPrimary"
+                ripple:rv_type="rectangle"
+                ripple:rv_zoomDuration="10">
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/content_first"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="@dimen/lima">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/list"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/trans"
-                            android:padding="@dimen/normal"
-                            android:src="@drawable/list" />
-
-                        <TextView
-                            android:id="@+id/sub_list"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:text="@string/sub_list"
-                            android:textColor="@color/colorPrimary" />
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/search"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/trans"
+                                android:padding="@dimen/normal"
+                                android:src="@drawable/search" />
+
+                            <TextView
+                                android:id="@+id/sub_search"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/sub_search"
+                                android:textColor="@color/colorPrimary" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/user"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/trans"
+                                android:padding="@dimen/normal"
+                                android:src="@drawable/user" />
+
+                            <TextView
+                                android:id="@+id/sub_user"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/sub_user"
+                                android:textColor="@color/colorPrimary" />
+                        </LinearLayout>
                     </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </com.andexert.library.RippleView>
+
+            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ripple:rv_color="@color/colorPrimary"
+                ripple:rv_type="rectangle"
+                ripple:rv_zoomDuration="10">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/content_second"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/lima">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/about"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/trans"
-                            android:padding="@dimen/normal"
-                            android:src="@drawable/help" />
-
-                        <TextView
-                            android:id="@+id/sub_about"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
-                            android:text="@string/sub_about"
-                            android:textColor="@color/colorPrimary" />
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/list"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/trans"
+                                android:padding="@dimen/normal"
+                                android:src="@drawable/list" />
+
+                            <TextView
+                                android:id="@+id/sub_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/sub_list"
+                                android:textColor="@color/colorPrimary" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/about"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/trans"
+                                android:padding="@dimen/normal"
+                                android:src="@drawable/help" />
+
+                            <TextView
+                                android:id="@+id/sub_about"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/sub_about"
+                                android:textColor="@color/colorPrimary" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
+            </com.andexert.library.RippleView>
         </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

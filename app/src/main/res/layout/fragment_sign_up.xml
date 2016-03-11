@@ -115,13 +115,22 @@
                         android:textColor="@color/colorPrimary" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/saveProfile"
+                <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:ripple="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_default"
-                    android:text="@string/signup"
-                    android:textColor="@color/white" />
+                    ripple:rv_color="@color/white"
+                    ripple:rv_type="rectangle"
+                    ripple:rv_zoomDuration="10">
+
+                    <Button
+                        android:id="@+id/saveProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_default"
+                        android:text="@string/signup"
+                        android:textColor="@color/white" />
+                </com.andexert.library.RippleView>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

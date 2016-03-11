@@ -3,6 +3,8 @@ package com.nadhif.onbeng;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -86,6 +88,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         swiper.setOnRefreshListener(this);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
 //        get data from sp
         splist = getSharedPreferences("LIST", MODE_PRIVATE);
@@ -101,15 +104,15 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         for (int i = 0; i < college.length(); i++) {
                             JSONObject c = college.getJSONObject(i);
                             dataRecycler.add(new DataRecycler(
-                                            c.getString("id").toString(),
-                                            c.getString("logo_bengkel").toString(),
-                                            c.getString("name_bengkel").toString(),
-                                            c.getString("date_order").toString(),
-                                            c.getString("status_order").toString(),
-                                            c.getString("status_order_text").toString(),
-                                            c.getString("damage_order").toString(),
-                                            c.getString("detail_bengkel").toString(),
-                                            c.getString("detail_order").toString()
+                                            c.getString("id"),
+                                            c.getString("logo_bengkel"),
+                                            c.getString("name_bengkel"),
+                                            c.getString("date_order"),
+                                            c.getString("status_order"),
+                                            c.getString("status_order_text"),
+                                            c.getString("damage_order"),
+                                            c.getString("detail_bengkel"),
+                                            c.getString("detail_order")
                                     )
                             );
                             adapter.notifyItemInserted(dataRecycler.size());
@@ -208,15 +211,15 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         for (int i = 0; i < college.length(); i++) {
                             JSONObject c = college.getJSONObject(i);
                             dataRecycler.add(new DataRecycler(
-                                            c.getString("id").toString(),
-                                            c.getString("logo_bengkel").toString(),
-                                            c.getString("name_bengkel").toString(),
-                                            c.getString("date_order").toString(),
-                                            c.getString("status_order").toString(),
-                                            c.getString("status_order_text").toString(),
-                                            c.getString("damage_order").toString(),
-                                            c.getString("detail_bengkel").toString(),
-                                            c.getString("detail_order").toString()
+                                            c.getString("id"),
+                                            c.getString("logo_bengkel"),
+                                            c.getString("name_bengkel"),
+                                            c.getString("date_order"),
+                                            c.getString("status_order"),
+                                            c.getString("status_order_text"),
+                                            c.getString("damage_order"),
+                                            c.getString("detail_bengkel"),
+                                            c.getString("detail_order")
                                     )
                             );
                             adapter.notifyItemInserted(dataRecycler.size());
