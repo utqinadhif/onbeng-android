@@ -147,7 +147,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                location.setText(place.getName());
+                dLocation.setText(place.getName());
             }
         }
     }

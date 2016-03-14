@@ -37,7 +37,6 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener, Vi
     TextView latlng;
     public static double latitude, longitude;
     LatLng pos;
-    ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -55,9 +54,6 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener, Vi
         } else {
             pos = new LatLng(-6.7449933, 111.0460305);
         }
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_spinner);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
         name = (EditText) view.findViewById(R.id.firstName);
         email = (EditText) view.findViewById(R.id.firstEmail);
@@ -141,13 +137,8 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener, Vi
         }
 
         @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
         protected void onPostExecute(String s) {
-            progressBar.setVisibility(View.GONE);
+            super.onPostExecute(s);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {

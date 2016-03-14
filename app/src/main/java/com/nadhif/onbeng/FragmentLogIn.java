@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -30,7 +27,6 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
     Button login;
     static double latitude, longitude;
     LatLng pos;
-    ProgressBar progressBar;
 
 
     @Nullable
@@ -54,9 +50,6 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
         password = (EditText) view.findViewById(R.id.firstPassword);
         login = (Button) view.findViewById(R.id.login);
         login.setOnClickListener(this);
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_spinner);
-        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
         return view;
     }
@@ -91,13 +84,8 @@ public class FragmentLogIn extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
         protected void onPostExecute(String s) {
-            progressBar.setVisibility(View.GONE);
+            super.onPostExecute(s);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
