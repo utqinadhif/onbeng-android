@@ -1,9 +1,12 @@
 package com.nadhif.onbeng;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -23,12 +31,13 @@ import org.json.JSONObject;
 /**
  * Created by nadhif on 05/12/2015.
  */
-public class FragmentSignUp extends Fragment implements View.OnClickListener {
+public class FragmentSignUp extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
     Button signup;
     EditText name, email, password, contact, location;
     TextView latlng;
     public static double latitude, longitude;
     LatLng pos;
+    ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -47,11 +56,16 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
             pos = new LatLng(-6.7449933, 111.0460305);
         }
 
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_spinner);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
         name = (EditText) view.findViewById(R.id.firstName);
         email = (EditText) view.findViewById(R.id.firstEmail);
         password = (EditText) view.findViewById(R.id.firstPassword);
         contact = (EditText) view.findViewById(R.id.firstContact);
         location = (EditText) view.findViewById(R.id.firstLocation);
+        location.setOnClickListener(this);
+        location.setOnFocusChangeListener(this);
 
         latlng = (TextView) view.findViewById(R.id.firstLatLng);
         latlng.setText("(" + pos.latitude + ", " + pos.longitude + ")");
@@ -67,6 +81,27 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         latitude = lat;
         longitude = lng;
         return fa;
+    }
+
+    private void searchLocation() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build((Activity) getContext());
+            startActivityForResult(intent, 2);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2) {
+            if (resultCode == -1) {
+                Place place = PlaceAutocomplete.getPlace(getContext(), data);
+                location.setText(place.getName());
+            }
+        }
     }
 
     @Override
@@ -88,6 +123,15 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
                 cv.put("latlng", "(" + pos.latitude + ", " + pos.longitude + ")");
                 new CurlSignUp(getContext(), Config.url + "log_user/signup", cv).execute();
             }
+        } else if (v == location) {
+            searchLocation();
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == location && hasFocus) {
+            searchLocation();
         }
     }
 
@@ -97,8 +141,13 @@ public class FragmentSignUp extends Fragment implements View.OnClickListener {
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {

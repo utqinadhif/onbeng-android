@@ -18,4 +18,7 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
         AIzaSyC1QjETBOrZPw7t0Z990i41DJMDQXK6H-Y
     </string>
+    <string name="google_maps_autocomplete">
+        AIzaSyDbjH0ZBd4UuGSJNqO90jggmjSmK7e2ugk
+    </string>
 </resources>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,14 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,7 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener, View.OnFocusChangeListener {
     GoogleMap mMap;
     TextView title, bengkelName, detail, direct, name, company, contact, email, location, lat, lng, damage, distance, price, amount;
     Dialog dialog;
@@ -54,6 +60,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     String id_m, fdistance, ftotal_price;
     SharedPreferences sp, slatlng;
     Marker curmar;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("View Bengkel");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
         try {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -84,7 +94,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                     });
             mapFragment.getMapAsync(this);
         } catch (Exception e) {
-           Config.toast(this, e.getMessage());
+            Config.toast(this, e.getMessage());
         }
 
         title = (TextView) findViewById(R.id.titleMap);
@@ -114,6 +124,31 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             longitude = Double.parseDouble(lg);
         } else {
             latitude = longitude = 0;
+        }
+        dDamage = (EditText) findViewById(R.id.damage);
+        dLocation = (EditText) findViewById(R.id.detailLocation);
+        dLocation.setOnClickListener(this);
+        dLocation.setOnFocusChangeListener(this);
+    }
+
+    private void searchLocation() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            startActivityForResult(intent, 2);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                location.setText(place.getName());
+            }
         }
     }
 
@@ -191,6 +226,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 contact = (TextView) dialog.findViewById(R.id.bengkelContact);
                 email = (TextView) dialog.findViewById(R.id.bengkelEmail);
                 location = (TextView) dialog.findViewById(R.id.bengkelLocation);
+                location.setOnClickListener(this);
+                location.setOnFocusChangeListener(this);
                 lat = (TextView) dialog.findViewById(R.id.bengkelLat);
                 lng = (TextView) dialog.findViewById(R.id.bengkelLng);
                 ok = (Button) dialog.findViewById(R.id.ok);
@@ -243,8 +280,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 Config.toast(getApplicationContext(), "No bengkel selected");
             }
         } else if (v == btnOrder) {
-            dDamage = (EditText) findViewById(R.id.damage);
-            dLocation = (EditText) findViewById(R.id.detailLocation);
             if (!dDamage.getText().toString().matches("") && !dLocation.getText().toString().matches("")) {
                 if (restoredText != null) {
                     ContentValues cv = new ContentValues();
@@ -289,6 +324,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             new Order(this, Config.url + "form/order", cv).execute();
         } else if (v == cancel_confirm) {
             dialog.dismiss();
+        } else if (v == dLocation) {
+            searchLocation();
         }
     }
 
@@ -319,14 +356,26 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 .show();
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == dLocation && hasFocus) {
+            searchLocation();
+        }
+    }
+
     private class json extends Curl {
         public json(Context c, String url, ContentValues post) {
             super(c, url, post);
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
@@ -369,8 +418,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 JSONArray routeObject = json.getJSONArray("routes");
@@ -431,8 +485,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
@@ -504,8 +563,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {

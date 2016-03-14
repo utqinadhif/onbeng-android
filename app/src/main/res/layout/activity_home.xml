@@ -60,13 +60,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ripple:rv_color="@color/colorPrimary"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoomDuration="10">
+                app:mrl_rippleColor="@color/colorPrimaryDark"
+                app:mrl_rippleDelayClick="true"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/content_image"
@@ -83,31 +83,31 @@
                         android:background="@color/trans"
                         android:src="@drawable/onbeng" />
                 </android.support.v7.widget.CardView>
-            </com.andexert.library.RippleView>
+            </com.balysv.materialripple.MaterialRippleLayout>
 
-            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView
+                android:id="@+id/content_first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ripple:rv_color="@color/colorPrimary"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoomDuration="10">
+                android:layout_marginBottom="@dimen/lima">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/content_first"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/lima">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        app:mrl_rippleColor="@color/colorPrimaryDark"
+                        app:mrl_rippleDelayClick="true"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <ImageButton
@@ -127,11 +127,20 @@
                                 android:text="@string/sub_search"
                                 android:textColor="@color/colorPrimary" />
                         </LinearLayout>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:mrl_rippleColor="@color/colorPrimaryDark"
+                        app:mrl_rippleDelayClick="true"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <ImageButton
@@ -152,33 +161,33 @@
                                 android:text="@string/sub_user"
                                 android:textColor="@color/colorPrimary" />
                         </LinearLayout>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-            </com.andexert.library.RippleView>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-            <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView
+                android:id="@+id/content_second"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                ripple:rv_color="@color/colorPrimary"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoomDuration="10">
+                android:layout_marginBottom="@dimen/lima">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/content_second"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/lima">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        app:mrl_rippleColor="@color/colorPrimaryDark"
+                        app:mrl_rippleDelayClick="true"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <ImageButton
@@ -199,6 +208,16 @@
                                 android:text="@string/sub_list"
                                 android:textColor="@color/colorPrimary" />
                         </LinearLayout>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:mrl_rippleColor="@color/colorPrimaryDark"
+                        app:mrl_rippleDelayClick="true"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -224,9 +243,9 @@
                                 android:text="@string/sub_about"
                                 android:textColor="@color/colorPrimary" />
                         </LinearLayout>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-            </com.andexert.library.RippleView>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

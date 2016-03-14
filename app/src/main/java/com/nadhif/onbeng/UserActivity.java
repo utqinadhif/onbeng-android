@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
     TextView logout;
     Button updateProfile;
     EditText name, email, password, contact, location;
@@ -30,6 +37,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     LatLng pos;
     SharedPreferences sp, slatlng;
     SharedPreferences.Editor editor, listOrder;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +50,16 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressBar.getIndeterminateDrawable().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
         slatlng = getSharedPreferences("LOCATION", MODE_PRIVATE);
         String lt = slatlng.getString("latitude", null);
         String lg = slatlng.getString("longitude", null);
         if (lt != null && lg != null) {
             latitude = Double.parseDouble(lt);
             longitude = Double.parseDouble(lg);
-        }else{
+        } else {
             latitude = longitude = 0;
         }
 
@@ -63,6 +74,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         password = (EditText) findViewById(R.id.yourPassword);
         contact = (EditText) findViewById(R.id.yourContact);
         location = (EditText) findViewById(R.id.yourLocation);
+        location.setOnClickListener(this);
+        location.setOnFocusChangeListener(this);
 
         sp = getSharedPreferences("SESSION", MODE_PRIVATE);
         String restoredText = sp.getString("login", null);
@@ -77,6 +90,27 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
             this.finish();
             startActivity(new Intent(getApplicationContext(), LogActivity.class));
+        }
+    }
+
+    private void searchLocation() {
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this);
+            startActivityForResult(intent, 2);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                location.setText(place.getName());
+            }
         }
     }
 
@@ -119,7 +153,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
             this.finish();
             HomeActivity.welcome.setText("");
-            if(HomeActivity.welcome.getVisibility() == View.VISIBLE){
+            if (HomeActivity.welcome.getVisibility() == View.VISIBLE) {
                 HomeActivity.welcome.setVisibility(View.GONE);
             }
             startActivity(new Intent(getApplicationContext(), LogActivity.class));
@@ -145,8 +179,17 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                 cv.put("latlng", "(" + pos.latitude + ", " + pos.longitude + ")");
                 new CurlUpdate(this, Config.url + "log_user/update", cv).execute();
             }
+        } else if (v == location) {
+            searchLocation();
         }
 
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (v == location && hasFocus) {
+            searchLocation();
+        }
     }
 
     private class CurlUpdate extends Curl {
@@ -155,8 +198,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            progressBar.setVisibility(View.GONE);
             try {
                 JSONObject json = new JSONObject(s);
                 Log.d("nadhif", json.toString());

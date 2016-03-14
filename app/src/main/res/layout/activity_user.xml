@@ -107,13 +107,13 @@
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        ripple:rv_color="@color/white"
-                        ripple:rv_type="rectangle"
-                        ripple:rv_zoomDuration="10">
+                        app:mrl_rippleColor="@color/white"
+                        app:mrl_rippleDelayClick="true"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true">
 
                         <Button
                             android:id="@+id/saveProfile"
@@ -122,7 +122,7 @@
                             android:background="@drawable/button_default"
                             android:text="@string/saveProfile"
                             android:textColor="@color/white" />
-                    </com.andexert.library.RippleView>
+                    </com.balysv.materialripple.MaterialRippleLayout>
 
                     <TextView
                         android:id="@+id/logout"
