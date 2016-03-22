@@ -329,7 +329,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    private void returnExit() {
+    private void returnOrder() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Confirmation")
@@ -563,18 +563,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
 
         @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
         protected void onPostExecute(String s) {
-            progressBar.setVisibility(View.GONE);
+            super.onPostExecute(s);
             try {
                 JSONObject json = new JSONObject(s);
                 if (json.getString("ok").equals("1")) {
                     Config.toast(getApplicationContext(), getResources().getString(R.string.orderProcessed));
-                    returnExit();
+                    returnOrder();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
