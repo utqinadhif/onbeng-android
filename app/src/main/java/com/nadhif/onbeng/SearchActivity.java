@@ -1,14 +1,18 @@
 package com.nadhif.onbeng;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,7 +51,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     GoogleMap mMap;
     TextView title, bengkelName, detail, direct, name, company, contact, email, location, lat, lng, damage, distance, price, amount;
     Dialog dialog;
-    ImageButton resetButton;
+    ImageButton resetButton, sms, call;
     Button ok, ok_confirm, cancel_confirm, btnOrder;
     ScrollView mScrollView;
     ArrayList<DataMap> dataMaps = new ArrayList<>();
@@ -57,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     PolylineOptions poliop;
     Polyline di;
     EditText dLocation, dDamage;
-    String id_m, fdistance, ftotal_price;
+    String id_m, fdistance, ftotal_price, nmbr;
     SharedPreferences sp, slatlng;
     Marker curmar;
     ProgressBar progressBar;
@@ -178,10 +182,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         }
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(focus, 11.0f));
         mMap.addMarker(new MarkerOptions()
-                        .position(focus)
-                        .title("Your Location")
-                        .snippet("1")
-                        .alpha(0.7f)
+                .position(focus)
+                .title("Your Location")
+                .snippet("1")
+                .alpha(0.7f)
         );
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -232,6 +236,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                 lng = (TextView) dialog.findViewById(R.id.bengkelLng);
                 ok = (Button) dialog.findViewById(R.id.ok);
 
+                sms = (ImageButton) dialog.findViewById(R.id.sms);
+                call = (ImageButton) dialog.findViewById(R.id.call);
+
                 for (int a = 0; a < dataMaps.size(); a++) {
                     if (dataMaps.get(a).getId_marker().equals(id_marker)) {
                         bengkelName.setText(dataMaps.get(a).getName());
@@ -241,10 +248,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         location.setText(dataMaps.get(a).getLocation());
                         lat.setText(dataMaps.get(a).getLat());
                         lng.setText(dataMaps.get(a).getLng());
+                        nmbr = dataMaps.get(a).getContact();
                     }
                 }
 
                 ok.setOnClickListener(this);
+                sms.setOnClickListener(this);
+                call.setOnClickListener(this);
 
                 dialog.show();
             } else {
@@ -326,6 +336,13 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
             dialog.dismiss();
         } else if (v == dLocation) {
             searchLocation();
+        } else if (v == sms) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", nmbr, null)));
+        } else if (v == call) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                Config.toast(this, "No permission granted for call");
+            }
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + nmbr)));
         }
     }
 
@@ -386,10 +403,10 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
                         double lngC = Double.parseDouble(c.getString("lng"));
                         LatLng marker = new LatLng(latC, lngC);
                         mMap.addMarker(new MarkerOptions()
-                                        .position(marker)
-                                        .title(c.getString("name"))
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon))
-                                        .snippet(c.getString("id_marker"))
+                                .position(marker)
+                                .title(c.getString("name"))
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon))
+                                .snippet(c.getString("id_marker"))
                         );
                         dataItemMaps = new DataMap(
                                 c.getString("id").toString(),
